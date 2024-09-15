@@ -1,25 +1,29 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { NxWelcomeComponent } from './nx-welcome.component';
 import { RouterModule } from '@angular/router';
 
 describe('AppComponent', () => {
+  let fixture: ComponentFixture<AppComponent>;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent, NxWelcomeComponent, RouterModule.forRoot([])],
+      imports: [AppComponent, RouterModule.forRoot([])],
     }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Welcome org');
-  });
-
-  it(`should have as title 'org'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('org');
+  describe('rendering', () => {
+    it(`should have as title 'org'`, () => {
+      const component = fixture.componentInstance;
+      expect(component.title).toEqual('org');
+    });
+    
+    it('should render title', () => {
+      fixture.detectChanges(); // trigger change detection i.e. render the component with its current state
+      const compiled = fixture.nativeElement;
+      const heading = compiled.querySelector('h1');
+      expect(heading.textContent).toContain('Welcome to org!');
+    });
   });
 });
